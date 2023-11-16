@@ -11,10 +11,13 @@ This is a service built with NestJS, TypeScript and MongoDB. It includes CRUD op
 
 ```
 PORT=7001
+DB_USER=user
+DB_PASSWORD=password
+DB_NAME=database
+DB_HOST=hostname
 ```
 
-4. Create a MySQL database named `users`
-5. Run the project: `yarn dev` (or `yarn start:dev` for production)
+4. Run the project: `yarn dev` (or `yarn start:prod` for production)
 
 ## Usage
 
