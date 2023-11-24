@@ -13,9 +13,9 @@ export class CreateTaskDTO {
   title: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @MinLength(3)
-  description: string;
+  description?: string;
 
   @IsBoolean()
   @IsOptional()
