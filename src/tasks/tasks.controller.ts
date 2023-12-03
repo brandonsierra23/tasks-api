@@ -10,18 +10,31 @@ import {
   Put,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { TasksService } from './tasks.service';
 import { CreateTaskDTO, UpdateTaskDTO } from './dto/task.dto';
+import { Swagger, EModules, RestApiRequest } from '../common';
 
 @Controller('tasks')
+@ApiTags('Tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
 
+  @Swagger({
+    RestApi: RestApiRequest.get,
+    module: EModules.tasks,
+    link: 'all',
+  })
   @Get()
-  getAll() {
-    return this.taskService.getAll();
+  async getAll() {
+    return await this.taskService.getAll();
   }
 
+  @Swagger({
+    RestApi: RestApiRequest.get,
+    module: EModules.tasks,
+  })
   @Get(':id')
   async findById(@Param('id') id: string) {
     const task = await this.taskService.getById(id);
@@ -30,6 +43,10 @@ export class TasksController {
     return task;
   }
 
+  @Swagger({
+    RestApi: RestApiRequest.post,
+    module: EModules.tasks,
+  })
   @Post()
   async create(@Body() newTask: CreateTaskDTO) {
     try {
@@ -42,6 +59,10 @@ export class TasksController {
     }
   }
 
+  @Swagger({
+    RestApi: RestApiRequest.delete,
+    module: EModules.tasks,
+  })
   @Delete(':id')
   @HttpCode(204)
   async delete(@Param('id') id: string) {
@@ -49,6 +70,10 @@ export class TasksController {
     if (!task) throw new NotFoundException('Task not found');
   }
 
+  @Swagger({
+    RestApi: RestApiRequest.patch,
+    module: EModules.tasks,
+  })
   @Put(':id')
   async update(@Param('id') id: string, @Body() updatedFields: UpdateTaskDTO) {
     const task = await this.taskService.update(id, updatedFields);

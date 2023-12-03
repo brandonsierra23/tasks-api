@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTaskDTO, UpdateTaskDTO } from './dto/task.dto';
 import { InjectModel } from '@nestjs/mongoose';
+
 import { Model } from 'mongoose';
-import { Task } from 'src/schemas/task.schema';
+
+import { exceptionOptions } from '../common';
+import { CreateTaskDTO, UpdateTaskDTO } from './dto/task.dto';
+import { Task } from '../schemas/task.schema';
 
 @Injectable()
 export class TasksService {
@@ -13,18 +16,34 @@ export class TasksService {
   }
 
   create(createTask: CreateTaskDTO) {
-    return this.taskModel.create(createTask);
+    try {
+      return this.taskModel.create(createTask);
+    } catch (error) {
+      return exceptionOptions[error.status || 500](error);
+    }
   }
 
   getById(id: string) {
-    return this.taskModel.findById(id);
+    try {
+      return this.taskModel.findById(id);
+    } catch (error) {
+      return exceptionOptions[error.status || 500](error);
+    }
   }
 
   update(id: string, updatedFields: UpdateTaskDTO) {
-    return this.taskModel.findByIdAndUpdate(id, updatedFields, { new: true });
+    try {
+      return this.taskModel.findByIdAndUpdate(id, updatedFields, { new: true });
+    } catch (error) {
+      return exceptionOptions[error.status || 500](error);
+    }
   }
 
   delete(id: string) {
-    return this.taskModel.findByIdAndDelete(id);
+    try {
+      return this.taskModel.findByIdAndDelete(id);
+    } catch (error) {
+      return exceptionOptions[error.status || 500](error);
+    }
   }
 }
